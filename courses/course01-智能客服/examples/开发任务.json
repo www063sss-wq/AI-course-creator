@@ -1,0 +1,497 @@
+{
+  "project": {
+    "name": "智能客服课程实例开发",
+    "version": "1.0.0",
+    "description": "课程 01 智能客服的实战演示实例，包含完整的代码示例、配置文件和演示数据",
+    "course": "企业 AI 落地第一课：从 0 到 1 搭建智能客服",
+    "target_audience": "企业技术负责人、产品经理、客服主管"
+  },
+  "examples": [
+    {
+      "id": "example-001",
+      "name": "电商智能客服示例",
+      "description": "完整的电商场景智能客服示例，包含售前咨询、订单查询、售后服务",
+      "priority": "高",
+      "estimated_hours": 8,
+      "status": "待开始",
+      "scenarios": [
+        {
+          "name": "售前咨询",
+          "faq_count": 30,
+          "intents": [
+            {
+              "intent_name": "product_consult",
+              "description": "产品功能咨询",
+              "training_data_count": 20,
+              "example_questions": [
+                "这个产品好用吗",
+                "有什么功能",
+                "适合我吗",
+                "质量怎么样",
+                "保修多久"
+              ]
+            },
+            {
+              "intent_name": "price_inquiry",
+              "description": "价格咨询",
+              "training_data_count": 15,
+              "example_questions": [
+                "多少钱",
+                "有优惠吗",
+                "现在什么价格",
+                "比 XX 家贵吗",
+                "能便宜点吗"
+              ]
+            },
+            {
+              "intent_name": "stock_check",
+              "description": "库存查询",
+              "training_data_count": 10,
+              "example_questions": [
+                "有现货吗",
+                "什么时候发货",
+                "这个还有货吗",
+                "能马上发吗",
+                "库存多少"
+              ]
+            }
+          ]
+        },
+        {
+          "name": "订单查询",
+          "faq_count": 25,
+          "intents": [
+            {
+              "intent_name": "order_logistics_query",
+              "description": "查询订单物流状态",
+              "training_data_count": 20,
+              "slots": [
+                {
+                  "slot_name": "order_id",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "订单号"
+                }
+              ],
+              "example_questions": [
+                "我的订单到哪了",
+                "查一下物流",
+                "发货了吗",
+                "物流怎么还没到",
+                "我的包裹在哪里"
+              ]
+            },
+            {
+              "intent_name": "order_status_query",
+              "description": "查询订单状态",
+              "training_data_count": 15,
+              "slots": [
+                {
+                  "slot_name": "order_id",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "订单号"
+                }
+              ],
+              "example_questions": [
+                "订单状态",
+                "我的订单怎么样了",
+                "订单处理好了吗",
+                "订单进度",
+                "订单审核通过了吗"
+              ]
+            }
+          ],
+          "dialog_flows": [
+            {
+              "flow_name": "物流查询流程",
+              "steps": [
+                {
+                  "step": 1,
+                  "bot_question": "您好，请问您的订单号是多少？",
+                  "slot_to_fill": "order_id",
+                  "validation": "^[A-Z0-9]{6,20}$"
+                },
+                {
+                  "step": 2,
+                  "action": "call_api",
+                  "api_name": "query_logistics",
+                  "parameters": {
+                    "order_id": "${order_id}"
+                  }
+                },
+                {
+                  "step": 3,
+                  "response": "您的订单${order_id}已${物流状态}，物流公司${物流公司}，单号${物流单号}，预计${预计送达时间}送达。"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "售后服务",
+          "faq_count": 35,
+          "intents": [
+            {
+              "intent_name": "after_sale_return",
+              "description": "申请退货",
+              "training_data_count": 20,
+              "slots": [
+                {
+                  "slot_name": "order_id",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "订单号"
+                },
+                {
+                  "slot_name": "return_reason",
+                  "slot_type": "choice",
+                  "required": true,
+                  "options": [
+                    "商品质量问题",
+                    "尺寸不合适",
+                    "颜色不喜欢",
+                    "其他原因"
+                  ]
+                }
+              ],
+              "example_questions": [
+                "我要退货",
+                "这个不想要了",
+                "能退款吗",
+                "退货流程",
+                "怎么退货"
+              ]
+            },
+            {
+              "intent_name": "after_sale_exchange",
+              "description": "申请换货",
+              "training_data_count": 15,
+              "slots": [
+                {
+                  "slot_name": "order_id",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "订单号"
+                },
+                {
+                  "slot_name": "exchange_reason",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "换货原因"
+                }
+              ],
+              "example_questions": [
+                "我要换货",
+                "能换个颜色吗",
+                "尺寸不合适能换吗",
+                "换货流程",
+                "怎么换货"
+              ]
+            },
+            {
+              "intent_name": "complaint",
+              "description": "投诉建议",
+              "training_data_count": 15,
+              "slots": [
+                {
+                  "slot_name": "complaint_type",
+                  "slot_type": "choice",
+                  "required": true,
+                  "options": [
+                    "商品质量",
+                    "物流服务",
+                    "客服态度",
+                    "其他问题"
+                  ]
+                },
+                {
+                  "slot_name": "complaint_content",
+                  "slot_type": "string",
+                  "required": true,
+                  "description": "投诉内容"
+                }
+              ],
+              "example_questions": [
+                "我要投诉",
+                "你们这个太差了",
+                "我要投诉客服",
+                "物流太慢了",
+                "商品有质量问题"
+              ]
+            }
+          ],
+          "dialog_flows": [
+            {
+              "flow_name": "退货申请流程",
+              "steps": [
+                {
+                  "step": 1,
+                  "bot_question": "好的，请问您的订单号是多少？",
+                  "slot_to_fill": "order_id",
+                  "validation": "^[A-Z0-9]{6,20}$"
+                },
+                {
+                  "step": 2,
+                  "bot_question": "查询到订单${商品信息}，请问退货原因是？\n1. 商品质量问题\n2. 尺寸不合适\n3. 颜色不喜欢\n4. 其他原因",
+                  "slot_to_fill": "return_reason",
+                  "validation": "^(1|2|3|4)$"
+                },
+                {
+                  "step": 3,
+                  "action": "create_return_request",
+                  "parameters": {
+                    "order_id": "${order_id}",
+                    "return_reason": "${return_reason}"
+                  }
+                },
+                {
+                  "step": 4,
+                  "response": "好的，已为您生成退货申请。\n订单号：${order_id}\n退货原因：${return_reason}\n退货地址：${退货地址}\n请在 7 天内寄回，寄回后 3-5 天退款。"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "total_intents": 8,
+      "total_dialog_flows": 2,
+      "total_faq": 90
+    },
+    {
+      "id": "example-002",
+      "name": "教育培训机构示例",
+      "description": "教育培训机构场景的智能客服示例",
+      "priority": "中",
+      "estimated_hours": 6,
+      "status": "待开始",
+      "scenarios": [
+        {
+          "name": "课程咨询",
+          "faq_count": 40
+        },
+        {
+          "name": "报名缴费",
+          "faq_count": 30
+        },
+        {
+          "name": "学习支持",
+          "faq_count": 35
+        }
+      ],
+      "total_faq": 105
+    },
+    {
+      "id": "example-003",
+      "name": "医疗机构示例",
+      "description": "医疗机构场景的智能客服示例",
+      "priority": "低",
+      "estimated_hours": 6,
+      "status": "待开始",
+      "scenarios": [
+        {
+          "name": "预约挂号",
+          "faq_count": 25
+        },
+        {
+          "name": "科室导诊",
+          "faq_count": 30
+        },
+        {
+          "name": "报告查询",
+          "faq_count": 20
+        }
+      ],
+      "total_faq": 75
+    }
+  ],
+  "deliverables": [
+    {
+      "type": "代码示例",
+      "items": [
+        {
+          "name": "意图定义文件",
+          "format": "JSON/YAML",
+          "description": "包含所有意图的定义、训练语料、槽位定义",
+          "example_file": "intents/ecommerce_intents.json"
+        },
+        {
+          "name": "对话流程配置",
+          "format": "JSON/YAML",
+          "description": "多轮对话流程配置，包含槽位填充逻辑",
+          "example_file": "dialog_flows/return_flow.json"
+        },
+        {
+          "name": "FAQ 知识库",
+          "format": "Excel/CSV",
+          "description": "标准问答对，包含相似问法",
+          "example_file": "faq/ecommerce_faq.csv"
+        },
+        {
+          "name": "API 集成示例",
+          "format": "Python/JavaScript",
+          "description": "订单查询、物流查询等 API 集成代码",
+          "example_file": "integrations/order_api.py"
+        },
+        {
+          "name": "Web 聊天窗口示例",
+          "format": "HTML/JavaScript",
+          "description": "可嵌入网站的聊天窗口代码",
+          "example_file": "webchat/demo.html"
+        }
+      ]
+    },
+    {
+      "type": "配置文件",
+      "items": [
+        {
+          "name": "平台配置模板",
+          "format": "JSON",
+          "description": "百度智能云、阿里云、腾讯云配置模板",
+          "example_file": "configs/baidu_config.json"
+        },
+        {
+          "name": "环境变量示例",
+          "format": ".env.example",
+          "description": "API 密钥、数据库连接等配置",
+          "example_file": ".env.example"
+        }
+      ]
+    },
+    {
+      "type": "演示数据",
+      "items": [
+        {
+          "name": "测试订单数据",
+          "format": "JSON",
+          "description": "用于演示的订单数据（脱敏）",
+          "example_file": "data/test_orders.json"
+        },
+        {
+          "name": "测试用户数据",
+          "format": "JSON",
+          "description": "用于演示的用户数据（脱敏）",
+          "example_file": "data/test_users.json"
+        },
+        {
+          "name": "物流数据",
+          "format": "JSON",
+          "description": "用于演示的物流状态数据",
+          "example_file": "data/test_logistics.json"
+        }
+      ]
+    },
+    {
+      "type": "文档",
+      "items": [
+        {
+          "name": "实例使用说明",
+          "format": "Markdown",
+          "description": "如何使用这些实例进行教学和演示",
+          "example_file": "README.md"
+        },
+        {
+          "name": "部署指南",
+          "format": "Markdown",
+          "description": "如何部署和运行这些实例",
+          "example_file": "DEPLOYMENT.md"
+        },
+        {
+          "name": "API 文档",
+          "format": "Markdown",
+          "description": "示例 API 的接口文档",
+          "example_file": "docs/API.md"
+        }
+      ]
+    }
+  ],
+  "development_phases": [
+    {
+      "phase": 1,
+      "name": "电商示例开发",
+      "priority": "高",
+      "estimated_hours": 8,
+      "status": "待开始",
+      "tasks": [
+        "创建目录结构",
+        "开发售前咨询意图（3 个）",
+        "开发订单查询意图（2 个）",
+        "开发售后服务意图（3 个）",
+        "配置物流查询对话流程",
+        "配置退货申请对话流程",
+        "准备 90 个 FAQ",
+        "编写 API 集成示例",
+        "创建 Web 聊天窗口示例",
+        "编写使用说明文档"
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "教育示例开发",
+      "priority": "中",
+      "estimated_hours": 6,
+      "status": "待开始",
+      "tasks": [
+        "开发课程咨询意图",
+        "开发报名缴费意图",
+        "开发学习支持意图",
+        "配置咨询对话流程",
+        "准备 105 个 FAQ",
+        "编写使用说明文档"
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "医疗示例开发",
+      "priority": "低",
+      "estimated_hours": 6,
+      "status": "待开始",
+      "tasks": [
+        "开发预约挂号意图",
+        "开发科室导诊意图",
+        "开发报告查询意图",
+        "配置预约对话流程",
+        "准备 75 个 FAQ",
+        "编写使用说明文档"
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "文档和完善",
+      "priority": "高",
+      "estimated_hours": 4,
+      "status": "待开始",
+      "tasks": [
+        "编写总 README",
+        "编写部署指南",
+        "编写 API 文档",
+        "测试所有示例",
+        "优化代码质量",
+        "录制演示视频"
+      ]
+    }
+  ],
+  "technical_requirements": {
+    "programming_languages": ["Python 3.8+", "JavaScript ES6+"],
+    "platforms": ["百度智能云", "阿里云", "腾讯云"],
+    "tools": ["Git", "VS Code", "Postman"],
+    "dependencies": ["requests", "flask", "python-dotenv"]
+  },
+  "success_criteria": [
+    "所有意图识别准确率>90%",
+    "对话流程顺畅，无逻辑错误",
+    "FAQ 覆盖 80% 常见问题",
+    "代码可运行，无语法错误",
+    "文档完整，易于理解",
+    "示例可演示，效果良好"
+  ],
+  "review_checklist": [
+    "目录结构是否合理",
+    "意图定义是否完整",
+    "对话流程是否清晰",
+    "FAQ 是否覆盖全面",
+    "代码示例是否可运行",
+    "文档是否完整易懂",
+    "是否符合课程教学目标"
+  ]
+}
