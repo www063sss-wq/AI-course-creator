@@ -1,0 +1,17 @@
+# 电商智能客服示例依赖
+
+# Web 框架
+Flask==2.3.0
+
+# HTTP 请求库
+requests==2.31.0
+
+# 环境变量管理
+python-dotenv==1.0.0
+
+# JSON 处理
+json5==0.9.14
+
+# 可选：用于更高级的意图识别
+# scikit-learn==1.3.0
+# numpy==1.24.0

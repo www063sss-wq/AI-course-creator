@@ -1,0 +1,170 @@
+{
+  "version": "1.0.0",
+  "description": "电商演示订单数据",
+  "orders": [
+    {
+      "order_id": "ABC12345678",
+      "user_id": "user_001",
+      "status": "delivered",
+      "order_date": "2024-01-10T10:30:00Z",
+      "payment_date": "2024-01-10T10:35:00Z",
+      "shipping_date": "2024-01-11T09:00:00Z",
+      "delivery_date": "2024-01-13T14:20:00Z",
+      "total_amount": 299.00,
+      "payment_method": "alipay",
+      "shipping_address": {
+        "name": "张三",
+        "phone": "138****1234",
+        "province": "广东省",
+        "city": "深圳市",
+        "district": "南山区",
+        "detail": "科技园南区 A 栋 101"
+      },
+      "items": [
+        {
+          "product_id": "prod_001",
+          "product_name": "智能蓝牙耳机",
+          "sku": "SKU001-BLACK",
+          "quantity": 1,
+          "price": 299.00,
+          "image": "https://example.com/images/headset.jpg"
+        }
+      ],
+      "logistics": {
+        "express_company": "顺丰速运",
+        "express_code": "sf",
+        "tracking_number": "SF1234567890",
+        "current_status": "已签收",
+        "tracks": [
+          {
+            "time": "2024-01-13T14:20:00Z",
+            "desc": "【深圳市】已签收，签收人：本人，感谢使用顺丰，期待再次为您服务"
+          },
+          {
+            "time": "2024-01-13T09:30:00Z",
+            "desc": "【深圳市】快件派送中，派送员：李四，电话：139****5678"
+          },
+          {
+            "time": "2024-01-13T08:00:00Z",
+            "desc": "【深圳市】快件到达【深圳南山公司】"
+          },
+          {
+            "time": "2024-01-12T18:30:00Z",
+            "desc": "【广州市】快件已从【广州中转场】发出，发往【深圳南山公司】"
+          },
+          {
+            "time": "2024-01-11T20:00:00Z",
+            "desc": "【广州市】快件到达【广州中转场】"
+          },
+          {
+            "time": "2024-01-11T09:00:00Z",
+            "desc": "【广州市】顺丰速运已收取快件"
+          }
+        ]
+      },
+      "is_returnable": false,
+      "return_deadline": "2024-01-20T14:20:00Z"
+    },
+    {
+      "order_id": "DEF87654321",
+      "user_id": "user_002",
+      "status": "shipped",
+      "order_date": "2024-01-12T15:20:00Z",
+      "payment_date": "2024-01-12T15:25:00Z",
+      "shipping_date": "2024-01-13T10:00:00Z",
+      "total_amount": 599.00,
+      "payment_method": "wechat",
+      "shipping_address": {
+        "name": "李四",
+        "phone": "139****5678",
+        "province": "北京市",
+        "city": "北京市",
+        "district": "朝阳区",
+        "detail": "望京 SOHO T1 座 1205"
+      },
+      "items": [
+        {
+          "product_id": "prod_002",
+          "product_name": "智能手表",
+          "sku": "SKU002-SILVER",
+          "quantity": 1,
+          "price": 599.00,
+          "image": "https://example.com/images/watch.jpg"
+        }
+      ],
+      "logistics": {
+        "express_company": "中通快递",
+        "express_code": "zto",
+        "tracking_number": "ZTO9876543210",
+        "current_status": "运输中",
+        "tracks": [
+          {
+            "time": "2024-01-14T10:00:00Z",
+            "desc": "【北京市】快件到达【北京朝阳公司】"
+          },
+          {
+            "time": "2024-01-14T06:30:00Z",
+            "desc": "【北京市】快件已从【北京中转场】发出，发往【北京朝阳公司】"
+          },
+          {
+            "time": "2024-01-13T22:00:00Z",
+            "desc": "【北京市】快件到达【北京中转场】"
+          },
+          {
+            "time": "2024-01-13T10:00:00Z",
+            "desc": "【广州市】中通快递已收取快件"
+          }
+        ]
+      },
+      "is_returnable": true,
+      "return_deadline": "2024-01-22T10:00:00Z"
+    },
+    {
+      "order_id": "GHI11223344",
+      "user_id": "user_003",
+      "status": "processing",
+      "order_date": "2024-01-14T09:15:00Z",
+      "payment_date": "2024-01-14T09:20:00Z",
+      "total_amount": 1299.00,
+      "payment_method": "credit_card",
+      "shipping_address": {
+        "name": "王五",
+        "phone": "137****9012",
+        "province": "上海市",
+        "city": "上海市",
+        "district": "浦东新区",
+        "detail": "陆家嘴金融中心 3 号楼 2801"
+      },
+      "items": [
+        {
+          "product_id": "prod_003",
+          "product_name": "无线充电器",
+          "sku": "SKU003-WHITE",
+          "quantity": 2,
+          "price": 199.00,
+          "image": "https://example.com/images/charger.jpg"
+        },
+        {
+          "product_id": "prod_004",
+          "product_name": "蓝牙音箱",
+          "sku": "SKU004-BLUE",
+          "quantity": 1,
+          "price": 901.00,
+          "image": "https://example.com/images/speaker.jpg"
+        }
+      ],
+      "logistics": null,
+      "is_returnable": false,
+      "estimated_shipping": "2024-01-15T18:00:00Z"
+    }
+  ],
+  "statistics": {
+    "total_orders": 3,
+    "by_status": {
+      "processing": 1,
+      "shipped": 1,
+      "delivered": 1
+    },
+    "total_amount": 2197.00
+  }
+}

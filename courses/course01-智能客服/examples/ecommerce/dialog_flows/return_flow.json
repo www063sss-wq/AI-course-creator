@@ -1,0 +1,240 @@
+{
+  "version": "1.0.0",
+  "flow_name": "退货申请对话流程",
+  "description": "处理用户申请退货的多轮对话流程",
+  "trigger_intent": "after_sale_return",
+  "nodes": [
+    {
+      "node_id": "start",
+      "node_type": "start",
+      "name": "开始节点",
+      "description": "识别到退货意图后进入此流程",
+      "next_node": "check_order_id"
+    },
+    {
+      "node_id": "check_order_id",
+      "node_type": "condition",
+      "name": "检查订单号",
+      "description": "检查用户是否提供了订单号",
+      "condition": {
+        "check": "slot_filled",
+        "slot_name": "order_id"
+      },
+      "branches": [
+        {
+          "condition": "true",
+          "next_node": "validate_order"
+        },
+        {
+          "condition": "false",
+          "next_node": "ask_order_id"
+        }
+      ]
+    },
+    {
+      "node_id": "ask_order_id",
+      "node_type": "slot_filling",
+      "name": "询问订单号",
+      "description": "向用户询问订单号",
+      "prompt": "您好，为了帮您办理退货，请提供您的订单号。订单号通常是 8-20 位的字母数字组合。",
+      "slot_to_fill": "order_id",
+      "validation": {
+        "pattern": "^[A-Z0-9]{6,20}$",
+        "error_message": "订单号格式不正确，请重新输入。"
+      },
+      "max_retries": 3,
+      "next_node": "validate_order"
+    },
+    {
+      "node_id": "validate_order",
+      "node_type": "condition",
+      "name": "验证订单",
+      "description": "验证订单是否存在且符合退货条件",
+      "condition": {
+        "check": "api_call",
+        "api": "validate_order_for_return",
+        "parameter": "${order_id}"
+      },
+      "branches": [
+        {
+          "condition": "valid",
+          "next_node": "check_return_period"
+        },
+        {
+          "condition": "not_found",
+          "next_node": "order_not_found"
+        },
+        {
+          "condition": "not_returnable",
+          "next_node": "explain_return_policy"
+        }
+      ]
+    },
+    {
+      "node_id": "order_not_found",
+      "node_type": "response",
+      "name": "订单未找到",
+      "description": "告知用户订单不存在",
+      "response": {
+        "text": "抱歉，未找到订单号 ${order_id} 的信息。请您：\n1. 检查订单号是否正确\n2. 登录账户查看订单列表\n3. 联系人工客服协助处理",
+        "suggestions": [
+          "查看订单列表",
+          "联系人工客服"
+        ]
+      },
+      "next_node": "end"
+    },
+    {
+      "node_id": "explain_return_policy",
+      "node_type": "response",
+      "name": "解释退货政策",
+      "description": "告知用户该订单不符合退货条件",
+      "response": {
+        "text": "抱歉，该订单暂不支持退货，原因可能是：\n1. 已超过 7 天无理由退货期\n2. 商品已使用或影响二次销售\n3. 特殊商品（如定制类、贴身衣物等）\n\n如有特殊情况，请联系人工客服处理。",
+        "suggestions": [
+          "联系人工客服",
+          "查看退货政策"
+        ]
+      },
+      "next_node": "end"
+    },
+    {
+      "node_id": "check_return_period",
+      "node_type": "response",
+      "name": "确认退货期限",
+      "description": "告知用户订单符合退货条件",
+      "response": {
+        "text": "您好，订单 ${order_id} 符合 7 天无理由退货条件。请问您要办理退货吗？",
+        "options": [
+          {
+            "label": "是的，申请退货",
+            "next_node": "ask_return_reason"
+          },
+          {
+            "label": "我再考虑一下",
+            "next_node": "end"
+          }
+        ]
+      }
+    },
+    {
+      "node_id": "ask_return_reason",
+      "node_type": "slot_filling",
+      "name": "询问退货原因",
+      "description": "收集用户退货原因",
+      "prompt": "请问您的退货原因是？\n1. 商品质量问题\n2. 商品与描述不符\n3. 拍错/多拍/不想要\n4. 其他原因",
+      "slot_to_fill": "return_reason",
+      "options": [
+        "商品质量问题",
+        "商品与描述不符",
+        "拍错/多拍/不想要",
+        "其他原因"
+      ],
+      "next_node": "ask_return_method"
+    },
+    {
+      "node_id": "ask_return_method",
+      "node_type": "slot_filling",
+      "name": "询问退货方式",
+      "description": "收集用户希望的退货方式",
+      "prompt": "请问您希望的退货方式是？\n1. 上门取件（推荐）\n2. 自行寄回\n3. 到店退货",
+      "slot_to_fill": "return_method",
+      "options": [
+        "上门取件",
+        "自行寄回",
+        "到店退货"
+      ],
+      "next_node": "confirm_return_info"
+    },
+    {
+      "node_id": "confirm_return_info",
+      "node_type": "confirmation",
+      "name": "确认退货信息",
+      "description": "向用户确认退货信息并提交申请",
+      "confirmation_message": "请确认您的退货信息：\n订单号：${order_id}\n退货原因：${return_reason}\n退货方式：${return_method}\n\n确认提交吗？",
+      "next_node": "submit_return_request"
+    },
+    {
+      "node_id": "submit_return_request",
+      "node_type": "api_call",
+      "name": "提交退货申请",
+      "description": "调用 API 提交退货申请",
+      "api": "create_return_request",
+      "parameters": {
+        "order_id": "${order_id}",
+        "return_reason": "${return_reason}",
+        "return_method": "${return_method}"
+      },
+      "next_node": "show_return_result"
+    },
+    {
+      "node_id": "show_return_result",
+      "node_type": "response",
+      "name": "显示退货结果",
+      "description": "向用户展示退货申请结果",
+      "response": {
+        "text": "✅ 退货申请已提交成功！\n\n退货编号：${return_id}\n退货地址：${return_address}\n注意事项：\n1. 请保持商品完好，配件齐全\n2. 请在 3 天内寄出商品\n3. 请勿使用到付快递\n\n退款将在收到退货后 1-3 个工作日内原路退回。",
+        "suggestions": [
+          "查看退货进度",
+          "联系快递员",
+          "查看退款进度"
+        ]
+      },
+      "next_node": "check_satisfaction"
+    },
+    {
+      "node_id": "check_satisfaction",
+      "node_type": "condition",
+      "name": "检查是否满意",
+      "description": "询问用户是否还有其他问题",
+      "prompt": "请问还有什么可以帮您的吗？",
+      "options": [
+        {
+          "label": "没有了，谢谢",
+          "next_node": "end"
+        },
+        {
+          "label": "还有其他问题",
+          "next_node": "transfer_to_main_menu"
+        }
+      ]
+    },
+    {
+      "node_id": "transfer_to_main_menu",
+      "node_type": "transfer",
+      "name": "返回主菜单",
+      "description": "返回主菜单让用户选择其他服务",
+      "transfer_to": "main_menu"
+    },
+    {
+      "node_id": "end",
+      "node_type": "end",
+      "name": "结束节点",
+      "description": "结束对话流程",
+      "response": {
+        "text": "感谢您的咨询，祝您生活愉快！如有其他问题，随时联系我们。"
+      }
+    }
+  ],
+  "error_handling": {
+    "timeout": {
+      "message": "您好，请问还在吗？如果长时间没有操作，对话将会自动结束。",
+      "timeout_seconds": 300
+    },
+    "max_retries_exceeded": {
+      "message": "抱歉，多次验证未通过。为了您的账户安全，建议您登录账户后申请或联系人工客服。",
+      "action": "transfer_to_human"
+    },
+    "system_error": {
+      "message": "抱歉，系统暂时繁忙，请稍后再试或联系人工客服。",
+      "action": "transfer_to_human"
+    }
+  },
+  "variables": {
+    "order_id": "",
+    "return_reason": "",
+    "return_method": "",
+    "return_id": "",
+    "return_address": ""
+  }
+}

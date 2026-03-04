@@ -1,0 +1,33 @@
+{
+  "platform": "百度智能云",
+  "version": "1.0.0",
+  "description": "百度智能云 UNIT 智能客服配置模板",
+  "bot_config": {
+    "app_id": "YOUR_APP_ID",
+    "api_key": "YOUR_API_KEY",
+    "secret_key": "YOUR_SECRET_KEY",
+    "unit_id": "YOUR_UNIT_ID"
+  },
+  "intent_config": {
+    "enable_intent_detection": true,
+    "confidence_threshold": 0.6,
+    "fallback_intent": "unknown",
+    "max_history_length": 10
+  },
+  "slot_filling": {
+    "enable_slot_filling": true,
+    "auto_confirm": false,
+    "confirmation_prompt": "请确认您的{slot_name}是{slot_value}，对吗？"
+  },
+  "dialog_management": {
+    "enable_context": true,
+    "context_timeout": 1800,
+    "enable_suggestions": true,
+    "max_suggestions": 4
+  },
+  "api_endpoints": {
+    "nlp_base_url": "https://aip.baidubce.com/rpc/2.0/unit",
+    "chat_url": "/v2/chat",
+    "token_url": "/oauth/2.0/token"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "platform": "腾讯云",
+  "version": "1.0.0",
+  "description": "腾讯云智能客服配置模板",
+  "bot_config": {
+    "secret_id": "YOUR_SECRET_ID",
+    "secret_key": "YOUR_SECRET_KEY",
+    "bot_id": "YOUR_BOT_ID",
+    "knowledge_base_id": "YOUR_KB_ID"
+  },
+  "intent_config": {
+    "enable_intent_detection": true,
+    "confidence_threshold": 0.6,
+    "enable_similar_question": true,
+    "similarity_threshold": 0.8
+  },
+  "slot_filling": {
+    "enable_slot_filling": true,
+    "entity_extraction": true,
+    "slot_validation": true
+  },
+  "dialog_management": {
+    "enable_context_aware": true,
+    "session_timeout": 1800,
+    "enable_cold_start": true
+  },
+  "api_endpoints": {
+    "base_url": "https://tbm.tencentcloudapi.com",
+    "version": "2019-01-11"
+  }
+}

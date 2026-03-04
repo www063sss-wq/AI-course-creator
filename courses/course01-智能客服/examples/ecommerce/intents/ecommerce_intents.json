@@ -1,0 +1,295 @@
+{
+  "version": "1.0.0",
+  "description": "电商智能客服意图定义 - 包含 8 个核心意图",
+  "intents": [
+    {
+      "intent_name": "product_consult",
+      "description": "产品功能咨询",
+      "category": "售前咨询",
+      "training_data_count": 20,
+      "example_questions": [
+        "这个产品好用吗",
+        "有什么功能",
+        "适合我吗",
+        "质量怎么样",
+        "保修多久",
+        "产品材质是什么",
+        "有哪些颜色可选",
+        "尺寸规格是多少",
+        "产地是哪里",
+        "有说明书吗",
+        "怎么使用这个产品",
+        "产品有什么特点",
+        "和旧款有什么区别",
+        "适合什么人群使用",
+        "使用寿命多久",
+        "需要保养吗",
+        "有防伪标识吗",
+        "产品认证有哪些",
+        "安全吗",
+        "环保吗"
+      ],
+      "response_template": "这款产品具有{功能列表}，主要特点是{特点}，适合{适用人群}使用。质保期为{质保期}。"
+    },
+    {
+      "intent_name": "price_inquiry",
+      "description": "价格咨询",
+      "category": "售前咨询",
+      "training_data_count": 15,
+      "example_questions": [
+        "多少钱",
+        "有优惠吗",
+        "现在什么价格",
+        "比 XX 家贵吗",
+        "能便宜点吗",
+        "最低多少钱",
+        "有折扣吗",
+        "会员价多少",
+        "包邮吗",
+        "有赠品吗",
+        "什么时候有活动",
+        "价格还能优惠吗",
+        "批发价多少",
+        "团购有优惠吗",
+        "优惠券怎么用"
+      ],
+      "response_template": "这款产品的价格是{价格}元，当前活动{活动信息}，性价比非常高。"
+    },
+    {
+      "intent_name": "stock_check",
+      "description": "库存查询",
+      "category": "售前咨询",
+      "training_data_count": 10,
+      "example_questions": [
+        "有现货吗",
+        "什么时候发货",
+        "这个还有货吗",
+        "能马上发吗",
+        "库存多少",
+        "多久能到货",
+        "预售多久",
+        "缺货吗",
+        "什么时候补货",
+        "能预订吗"
+      ],
+      "response_template": "您好，这款商品{库存状态}，付款后{发货时间}内发货。"
+    },
+    {
+      "intent_name": "order_logistics_query",
+      "description": "查询订单物流状态",
+      "category": "订单查询",
+      "training_data_count": 20,
+      "slots": [
+        {
+          "slot_name": "order_id",
+          "slot_type": "string",
+          "required": true,
+          "description": "订单号",
+          "validation": "^[A-Z0-9]{6,20}$"
+        }
+      ],
+      "example_questions": [
+        "我的订单到哪了",
+        "查一下物流",
+        "发货了吗",
+        "物流怎么还没到",
+        "我的包裹在哪里",
+        "订单怎么还没到",
+        "快递到哪了",
+        "物流信息",
+        "什么时候能收到货",
+        "物流单号是多少",
+        "帮我查下物流",
+        "包裹到哪了",
+        "物流更新了吗",
+        "怎么查物流",
+        "物流停了吗",
+        "为什么物流不动",
+        "物流显示已签收但我没收到",
+        "能加急配送吗",
+        "可以改地址吗",
+        "能自提吗"
+      ],
+      "response_template": "您的订单{订单号}已{物流状态}，物流公司{物流公司}，单号{物流单号}，预计{预计送达时间}送达。"
+    },
+    {
+      "intent_name": "order_status_query",
+      "description": "查询订单状态",
+      "category": "订单查询",
+      "training_data_count": 15,
+      "slots": [
+        {
+          "slot_name": "order_id",
+          "slot_type": "string",
+          "required": true,
+          "description": "订单号",
+          "validation": "^[A-Z0-9]{6,20}$"
+        }
+      ],
+      "example_questions": [
+        "订单状态",
+        "我的订单怎么样了",
+        "订单处理好了吗",
+        "订单进度",
+        "订单审核通过了吗",
+        "订单付款成功了吗",
+        "订单能修改吗",
+        "订单能取消吗",
+        "订单什么时候发货",
+        "订单怎么还没处理",
+        "订单卡住了",
+        "订单异常",
+        "订单被取消了",
+        "订单退款进度",
+        "订单发票开了吗"
+      ],
+      "response_template": "您的订单{订单号}当前状态为{订单状态}，预计{处理完成时间}完成处理。"
+    },
+    {
+      "intent_name": "after_sale_return",
+      "description": "申请退货",
+      "category": "售后服务",
+      "training_data_count": 20,
+      "slots": [
+        {
+          "slot_name": "order_id",
+          "slot_type": "string",
+          "required": true,
+          "description": "订单号"
+        },
+        {
+          "slot_name": "return_reason",
+          "slot_type": "choice",
+          "required": true,
+          "options": [
+            "商品质量问题",
+            "尺寸不合适",
+            "颜色不喜欢",
+            "其他原因"
+          ],
+          "description": "退货原因"
+        }
+      ],
+      "example_questions": [
+        "我要退货",
+        "这个不想要了",
+        "能退款吗",
+        "退货流程",
+        "怎么退货",
+        "东西不合适能退吗",
+        "退货要运费吗",
+        "退款多久到账",
+        "申请售后",
+        "退换货政策",
+        "7 天无理由退货",
+        "退货地址给我",
+        "退货怎么操作",
+        "退货需要包装吗",
+        "退货运费谁出",
+        "退货多久处理",
+        "退款退到哪里",
+        "发票要一起寄回吗",
+        "赠品要退吗",
+        "退货后多久收到退款"
+      ],
+      "response_template": "已为您提交退货申请，退货地址：{退货地址}，请在 7 天内寄回，寄回后 3-5 天退款。"
+    },
+    {
+      "intent_name": "after_sale_exchange",
+      "description": "申请换货",
+      "category": "售后服务",
+      "training_data_count": 15,
+      "slots": [
+        {
+          "slot_name": "order_id",
+          "slot_type": "string",
+          "required": true,
+          "description": "订单号"
+        },
+        {
+          "slot_name": "exchange_reason",
+          "slot_type": "string",
+          "required": true,
+          "description": "换货原因"
+        },
+        {
+          "slot_name": "exchange_target",
+          "slot_type": "string",
+          "required": false,
+          "description": "换什么（颜色/尺寸）"
+        }
+      ],
+      "example_questions": [
+        "我要换货",
+        "能换个颜色吗",
+        "尺寸不合适能换吗",
+        "换货流程",
+        "怎么换货",
+        "可以换货吗",
+        "换货运费谁出",
+        "换货多久",
+        "换货政策",
+        "能换尺码吗",
+        "换货怎么操作",
+        "换货需要寄回吗",
+        "换货邮费贵吗",
+        "换货后多久发货",
+        "换货能保证有货吗"
+      ],
+      "response_template": "已为您提交换货申请，换货地址：{换货地址}，收到退货后我们会尽快为您发出新商品。"
+    },
+    {
+      "intent_name": "complaint",
+      "description": "投诉建议",
+      "category": "售后服务",
+      "training_data_count": 15,
+      "slots": [
+        {
+          "slot_name": "complaint_type",
+          "slot_type": "choice",
+          "required": true,
+          "options": [
+            "商品质量",
+            "物流服务",
+            "客服态度",
+            "其他问题"
+          ],
+          "description": "投诉类型"
+        },
+        {
+          "slot_name": "complaint_content",
+          "slot_type": "string",
+          "required": true,
+          "description": "投诉内容"
+        }
+      ],
+      "example_questions": [
+        "我要投诉",
+        "你们这个太差了",
+        "我要投诉客服",
+        "物流太慢了",
+        "商品有质量问题",
+        "服务态度不好",
+        "虚假宣传",
+        "骗人",
+        "我要投诉你们",
+        "太失望了",
+        "再也不买了",
+        "垃圾产品",
+        "差评",
+        "投诉电话多少",
+        "找你们领导"
+      ],
+      "response_template": "非常抱歉给您带来不好的体验，我们已经记录您的投诉（工单号：{工单号}），客服专员会在 24 小时内联系您处理。"
+    }
+  ],
+  "statistics": {
+    "total_intents": 8,
+    "by_category": {
+      "售前咨询": 3,
+      "订单查询": 2,
+      "售后服务": 3
+    },
+    "total_training_examples": 125
+  }
+}

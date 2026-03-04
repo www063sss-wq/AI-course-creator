@@ -1,0 +1,166 @@
+{
+  "version": "1.0.0",
+  "flow_name": "物流查询对话流程",
+  "description": "处理用户查询订单物流状态的多轮对话流程",
+  "trigger_intent": "order_logistics_query",
+  "nodes": [
+    {
+      "node_id": "start",
+      "node_type": "start",
+      "name": "开始节点",
+      "description": "识别到物流查询意图后进入此流程",
+      "next_node": "check_order_id"
+    },
+    {
+      "node_id": "check_order_id",
+      "node_type": "condition",
+      "name": "检查订单号",
+      "description": "检查用户是否提供了订单号",
+      "condition": {
+        "check": "slot_filled",
+        "slot_name": "order_id"
+      },
+      "branches": [
+        {
+          "condition": "true",
+          "next_node": "query_logistics"
+        },
+        {
+          "condition": "false",
+          "next_node": "ask_order_id"
+        }
+      ]
+    },
+    {
+      "node_id": "ask_order_id",
+      "node_type": "slot_filling",
+      "name": "询问订单号",
+      "description": "向用户询问订单号",
+      "prompt": "您好，为了帮您查询物流信息，请提供您的订单号。订单号通常是 8-20 位的字母数字组合，例如：ABC12345678",
+      "slot_to_fill": "order_id",
+      "validation": {
+        "pattern": "^[A-Z0-9]{6,20}$",
+        "error_message": "订单号格式不正确，请提供 8-20 位的字母数字组合，例如：ABC12345678"
+      },
+      "max_retries": 3,
+      "next_node": "validate_order_id"
+    },
+    {
+      "node_id": "validate_order_id",
+      "node_type": "condition",
+      "name": "验证订单号",
+      "description": "验证订单号是否在系统中存在",
+      "condition": {
+        "check": "api_call",
+        "api": "validate_order",
+        "parameter": "${order_id}"
+      },
+      "branches": [
+        {
+          "condition": "exists",
+          "next_node": "query_logistics"
+        },
+        {
+          "condition": "not_exists",
+          "next_node": "order_not_found"
+        }
+      ]
+    },
+    {
+      "node_id": "order_not_found",
+      "node_type": "response",
+      "name": "订单未找到",
+      "description": "告知用户订单不存在",
+      "response": {
+        "text": "抱歉，未找到订单号 ${order_id} 的信息。请您：\n1. 检查订单号是否正确\n2. 登录账户查看订单列表\n3. 联系人工客服协助查询",
+        "suggestions": [
+          "查看订单列表",
+          "联系人工客服",
+          "重新查询"
+        ]
+      },
+      "next_node": "end"
+    },
+    {
+      "node_id": "query_logistics",
+      "node_type": "api_call",
+      "name": "查询物流信息",
+      "description": "调用物流 API 查询物流状态",
+      "api": "get_logistics_info",
+      "parameters": {
+        "order_id": "${order_id}"
+      },
+      "next_node": "show_logistics"
+    },
+    {
+      "node_id": "show_logistics",
+      "node_type": "response",
+      "name": "显示物流信息",
+      "description": "向用户展示物流轨迹信息",
+      "response": {
+        "text": "您的订单 ${order_id} 物流信息如下：\n\n📦 快递公司：${express_company}\n🚚 运单号：${tracking_number}\n📍 当前状态：${current_status}\n⏰ 更新时间：${update_time}\n\n最新物流轨迹：\n${latest_tracking_info}",
+        "suggestions": [
+          "查看完整物流轨迹",
+          "联系快递员",
+          "催单"
+        ]
+      },
+      "next_node": "check_satisfaction"
+    },
+    {
+      "node_id": "check_satisfaction",
+      "node_type": "condition",
+      "name": "检查是否满意",
+      "description": "询问用户是否还有其他问题",
+      "prompt": "请问还有什么可以帮您的吗？",
+      "options": [
+        {
+          "label": "没有了，谢谢",
+          "next_node": "end"
+        },
+        {
+          "label": "还有其他问题",
+          "next_node": "transfer_to_main_menu"
+        }
+      ]
+    },
+    {
+      "node_id": "transfer_to_main_menu",
+      "node_type": "transfer",
+      "name": "返回主菜单",
+      "description": "返回主菜单让用户选择其他服务",
+      "transfer_to": "main_menu"
+    },
+    {
+      "node_id": "end",
+      "node_type": "end",
+      "name": "结束节点",
+      "description": "结束对话流程",
+      "response": {
+        "text": "感谢您的咨询，祝您生活愉快！如有其他问题，随时联系我们。"
+      }
+    }
+  ],
+  "error_handling": {
+    "timeout": {
+      "message": "您好，请问还在吗？如果长时间没有操作，对话将会自动结束。",
+      "timeout_seconds": 300
+    },
+    "max_retries_exceeded": {
+      "message": "抱歉，多次验证未通过。为了您的账户安全，建议您登录账户后查询或联系人工客服。",
+      "action": "transfer_to_human"
+    },
+    "system_error": {
+      "message": "抱歉，系统暂时繁忙，请稍后再试或联系人工客服。",
+      "action": "transfer_to_human"
+    }
+  },
+  "variables": {
+    "order_id": "",
+    "express_company": "",
+    "tracking_number": "",
+    "current_status": "",
+    "update_time": "",
+    "latest_tracking_info": ""
+  }
+}
