@@ -1,233 +1,243 @@
-# 智能客服课程实例开发计划
+# 智能客服课程 - 实战示例
 
-## 📋 概述
+> 💻 电商智能客服完整代码示例 - 可运行、可演示、可教学
 
-本目录包含课程 01《企业 AI 落地第一课：从 0 到 1 搭建智能客服》的完整实战演示实例。
+---
 
-## 🎯 目标
+## 📚 示例概览
 
-为学员提供：
-- **可运行的代码示例**：直接可用的意图定义、对话流程、API 集成
-- **多行业场景**：电商、教育、医疗三大典型场景
-- **完整配置**：主流平台（百度、阿里、腾讯）配置模板
-- **详细文档**：使用说明、部署指南、API 文档
+本目录包含智能客服课程的完整实战代码示例，用于课堂演示和学员实验。
+
+### 已完成的示例
+
+| 示例 | 行业 | 状态 | 规模 | 完成时间 |
+|------|------|------|------|---------|
+| [ecommerce/](ecommerce/README.md) | 电商 | ✅ 完成 | 19 个文件，~3,200 行代码 | 2026-03-05 |
+
+### 规划中的示例
+
+| 示例 | 行业 | 状态 | 预计规模 |
+|------|------|------|---------|
+| education/ | 教育 | 🚧 规划中 | ~3,000 行代码 |
+| healthcare/ | 医疗 | 🚧 规划中 | ~3,000 行代码 |
+
+---
+
+## 🎯 电商智能客服示例
+
+### 核心功能
+1. **意图识别系统**
+   - 8 个核心意图（售前咨询、订单查询、售后服务）
+   - 125 条训练语料
+   - 支持槽位填充
+
+2. **对话流程引擎**
+   - 物流查询对话流程（10 个节点）
+   - 退货申请对话流程（14 个节点）
+   - 支持多轮对话和条件分支
+
+3. **FAQ 知识库**
+   - 90 个电商 FAQ
+   - 4 大类别（售前、订单、售后、通用）
+   - 支持相似问题匹配
+
+4. **API 集成示例**
+   - 订单 API 集成客户端
+   - 物流 API 集成客户端
+   - 完整的错误处理
+
+5. **Web 聊天窗口**
+   - Flask 后端应用
+   - 美观的前端界面
+   - 实时对话功能
+   - 快捷回复按钮
+
+### 技术栈
+- **后端**: Python 3 + Flask 2.3.0
+- **前端**: HTML5 + CSS3 + JavaScript
+- **数据**: JSON + CSV
+- **配置**: 多平台支持（百度、阿里、腾讯）
+
+### 快速开始
+```bash
+cd ecommerce
+./quickstart.sh
+# 访问 http://localhost:5001
+```
+
+### 详细文档
+- [电商示例使用说明](ecommerce/README.md)
+- [电商示例项目总结](ecommerce/PROJECT_SUMMARY.md)
+- [界面截图说明](ecommerce/screenshots/README.md)
+
+---
 
 ## 📁 目录结构
 
 ```
 examples/
-├── ecommerce/              # 电商示例（优先级：高）
-│   ├── intents/           # 意图定义
-│   ├── dialog_flows/      # 对话流程
-│   ├── faq/              # FAQ 知识库
-│   ├── integrations/      # API 集成
-│   ├── webchat/          # Web 聊天窗口
-│   ├── configs/          # 配置文件
-│   ├── data/             # 演示数据
-│   └── README.md         # 电商示例说明
-├── education/            # 教育示例（优先级：中）
-│   └── ...
-├── healthcare/           # 医疗示例（优先级：低）
-│   └── ...
-├── shared/               # 共享资源
-│   ├── utils/
-│   ├── templates/
-│   └── docs/
-├── README.md             # 本文件
-├── DEPLOYMENT.md         # 部署指南（待创建）
-└── .env.example          # 环境变量示例
+├── README.md                      # 本文件
+├── 开发任务.json                  # 开发任务规划
+├── 交付说明.md                    # 交付成果说明
+│
+├── ecommerce/                     # 电商示例（Phase 1 完成 ✅）
+│   ├── intents/                   # 意图定义
+│   │   └── ecommerce_intents.json # 8 个意图，125 条语料
+│   ├── dialog_flows/              # 对话流程
+│   │   ├── logistics_flow.json    # 物流查询
+│   │   └── return_flow.json       # 退货申请
+│   ├── faq/                       # FAQ 知识库
+│   │   └── ecommerce_faq.csv      # 90 个 FAQ
+│   ├── integrations/              # API 集成示例
+│   │   ├── order_api.py           # 订单 API
+│   │   └── logistics_api.py       # 物流 API
+│   ├── webchat/                   # Web 聊天窗口
+│   │   ├── app.py                 # Flask 应用
+│   │   └── templates/chat.html    # 聊天页面
+│   ├── configs/                   # 配置文件模板
+│   │   ├── baidu_config.json      # 百度配置
+│   │   ├── aliyun_config.json     # 阿里配置
+│   │   └── tencent_config.json    # 腾讯配置
+│   ├── data/                      # 演示数据
+│   │   └── test_orders.json       # 测试订单
+│   ├── screenshots/               # 界面截图
+│   │   ├── README.md
+│   │   ├── webchat-demo.png
+│   │   └── demo-chat-*.png
+│   ├── PROJECT_SUMMARY.md         # 项目总结
+│   ├── README.md                  # 使用说明
+│   ├── requirements.txt           # Python 依赖
+│   ├── .env.example               # 环境变量
+│   └── quickstart.sh              # 快速启动脚本
+│
+└── shared/                        # 共享资源（规划中）
+    ├── utils/                     # 通用工具
+    ├── templates/                 # 通用模板
+    └── docs/                      # 通用文档
 ```
-
-## 📊 开发计划
-
-### Phase 1：电商示例开发（8 小时）⭐⭐⭐
-
-**场景覆盖**：
-- 售前咨询（30 个 FAQ）
-- 订单查询（25 个 FAQ）
-- 售后服务（35 个 FAQ）
-
-**意图开发**（8 个）：
-1. `product_consult` - 产品功能咨询
-2. `price_inquiry` - 价格咨询
-3. `stock_check` - 库存查询
-4. `order_logistics_query` - 物流查询
-5. `order_status_query` - 订单状态查询
-6. `after_sale_return` - 退货申请
-7. `after_sale_exchange` - 换货申请
-8. `complaint` - 投诉建议
-
-**对话流程**（2 个）：
-1. 物流查询流程（3 轮对话）
-2. 退货申请流程（4 轮对话）
-
-**交付物**：
-- ✅ 意图定义文件（JSON 格式）
-- ✅ 对话流程配置（JSON 格式）
-- ✅ 90 个 FAQ（CSV 格式）
-- ✅ API 集成示例（Python）
-- ✅ Web 聊天窗口示例（HTML/JS）
-- ✅ 配置文件模板
-- ✅ 演示数据
-- ✅ 使用说明文档
-
-### Phase 2：教育示例开发（6 小时）⭐⭐
-
-**场景覆盖**：
-- 课程咨询（40 个 FAQ）
-- 报名缴费（30 个 FAQ）
-- 学习支持（35 个 FAQ）
-
-**交付物**：
-- 意图定义文件
-- 对话流程配置
-- 105 个 FAQ
-- 使用说明文档
-
-### Phase 3：医疗示例开发（6 小时）⭐
-
-**场景覆盖**：
-- 预约挂号（25 个 FAQ）
-- 科室导诊（30 个 FAQ）
-- 报告查询（20 个 FAQ）
-
-**交付物**：
-- 意图定义文件
-- 对话流程配置
-- 75 个 FAQ
-- 使用说明文档
-
-### Phase 4：文档和完善（4 小时）⭐⭐⭐
-
-**任务**：
-- 总 README 编写
-- 部署指南编写
-- API 文档编写
-- 全示例测试
-- 代码质量优化
-- 演示视频录制
-
-## 🔧 技术要求
-
-### 编程语言
-- Python 3.8+
-- JavaScript ES6+
-
-### 支持平台
-- 百度智能云
-- 阿里云小蜜
-- 腾讯云智服
-
-### 开发工具
-- Git（版本控制）
-- VS Code（代码编辑）
-- Postman（API 测试）
-
-### 依赖库
-```python
-requests>=2.28.0
-flask>=2.0.0
-python-dotenv>=0.20.0
-```
-
-## ✅ 成功标准
-
-1. **准确率**：所有意图识别准确率>90%
-2. **流畅性**：对话流程顺畅，无逻辑错误
-3. **覆盖率**：FAQ 覆盖 80% 常见问题
-4. **可用性**：代码可运行，无语法错误
-5. **文档**：完整易懂，易于学习
-6. **演示**：示例可演示，效果良好
-
-## 📝 开发任务详情
-
-详细开发任务请查看：[`开发任务.json`](./开发任务.json)
-
-该 JSON 文件包含：
-- 完整的意图定义（名称、描述、训练语料、槽位）
-- 对话流程配置（步骤、槽位填充、API 调用）
-- FAQ 清单
-- 交付物列表
-- 开发阶段和时间估算
-- 技术要求和成功标准
-
-## 🔍 审查清单
-
-在开始开发前，请审查以下内容：
-
-- [ ] 目录结构是否合理？
-- [ ] 意图定义是否完整？
-- [ ] 对话流程是否清晰？
-- [ ] FAQ 是否覆盖全面？
-- [ ] 代码示例是否可运行？
-- [ ] 文档是否完整易懂？
-- [ ] 是否符合课程教学目标？
-
-## 📋 下一步
-
-1. **审查开发任务**：查看 `开发任务.json` 了解详细任务
-2. **确认优先级**：Phase 1（电商示例）优先级最高
-3. **准备开发环境**：安装 Python、Node.js、Git
-4. **获取 API 密钥**：注册百度智能云/阿里云/腾讯云账号
-5. **开始开发**：按照任务文档开始 Phase 1 开发
-
-## 💡 使用说明（开发完成后）
-
-### 快速开始
-
-```bash
-# 1. 克隆项目
-git clone https://github.com/www063sss-wq/AI-course-creator.git
-cd AI-course-creator/courses/course01-智能客服/examples
-
-# 2. 安装依赖
-pip install -r requirements.txt
-
-# 3. 配置环境变量
-cp .env.example .env
-# 编辑 .env 文件，填入 API 密钥
-
-# 4. 运行示例
-python ecommerce/demo.py
-
-# 5. 打开浏览器
-# 访问 http://localhost:5000
-```
-
-### 测试意图识别
-
-```python
-from intents import EcommerceIntents
-
-intents = EcommerceIntents()
-result = intents.predict("我的订单到哪了")
-print(result)
-# 输出：{'intent': 'order_logistics_query', 'confidence': 0.95}
-```
-
-### 测试对话流程
-
-```python
-from dialog_flows import ReturnFlow
-
-flow = ReturnFlow()
-response = flow.process_step(1, {"order_id": "123456"})
-print(response)
-# 输出：查询到订单 iPhone 15，请问退货原因是？
-```
-
-## 📞 协作说明
-
-- **开发指南**：查看项目根目录的 `DEVELOPMENT_GUIDE.md`
-- **问题反馈**：在 GitHub 创建 Issue
-- **代码审查**：提交 Pull Request
-
-## 📄 许可证
-
-本项目文档版权归作者所有，未经许可不得转载或用于商业用途。
 
 ---
 
-**版本**：1.0.0  
-**更新日期**：2026-03-05  
-**状态**：📋 待审查
+## 🚀 使用方式
+
+### 1. 课堂演示
+```bash
+# 启动 Web 聊天演示
+cd ecommerce
+./quickstart.sh
+# 选择选项 1，访问 http://localhost:5001
+```
+
+### 2. 查看代码示例
+```bash
+# 查看意图定义
+cat ecommerce/intents/ecommerce_intents.json
+
+# 查看对话流程
+cat ecommerce/dialog_flows/logistics_flow.json
+
+# 查看 API 集成
+cat ecommerce/integrations/order_api.py
+```
+
+### 3. 运行测试
+```bash
+# 测试订单 API
+python3 ecommerce/integrations/order_api.py
+
+# 测试物流 API
+python3 ecommerce/integrations/logistics_api.py
+```
+
+---
+
+## 📊 开发进度
+
+### Phase 1: 电商示例（✅ 完成）
+- 意图定义：8 个核心意图，125 条训练语料
+- 对话流程：2 个完整流程（物流查询、退货申请）
+- FAQ 知识库：90 个电商 FAQ
+- API 集成：订单 API、物流 API
+- Web 应用：Flask 聊天窗口
+- 配置文件：3 个云平台模板
+- 演示数据：3 个测试订单
+- 界面截图：5 张
+- 文档说明：完整 README 和总结
+
+**总计**: 19 个文件，~3,200 行代码
+
+### Phase 2: 教育示例（🚧 规划中）
+- K12 教育场景
+- 语言培训场景
+- 职业教育场景
+
+### Phase 3: 医疗示例（🚧 规划中）
+- 医院导诊场景
+- 健康咨询场景
+- 预约挂号场景
+
+---
+
+## 🎓 教学应用
+
+### 场景 1: 课堂演示（15 分钟）
+1. 启动 Web 聊天应用
+2. 演示用户提问"产品怎么用？"
+3. 展示意图识别和 FAQ 匹配过程
+4. 展示智能回复生成
+
+### 场景 2: 学员实验（30 分钟）
+1. 修改意图定义文件
+2. 添加新的训练语料
+3. 测试意图识别效果
+4. 对比修改前后差异
+
+### 场景 3: 对话流程设计（45 分钟）
+1. 分析现有对话流程
+2. 设计新的对话节点
+3. 配置槽位填充规则
+4. 测试多轮对话效果
+
+### 场景 4: API 集成实战（60 分钟）
+1. 学习 API 客户端编写
+2. 集成真实订单系统
+3. 集成物流查询 API
+4. 处理异常情况
+
+---
+
+## 📚 相关文档
+
+- [课程主页](../INDEX.md)
+- [开发任务](开发任务.json)
+- [交付说明](交付说明.md)
+- [电商示例详细说明](ecommerce/README.md)
+
+---
+
+## 💡 扩展建议
+
+### 短期优化（1-2 小时）
+1. 添加更多意图（产品推荐、投诉处理）
+2. 完善对话流程（换货、维修流程）
+3. 增加测试用例
+4. 优化 UI 样式
+
+### 中期扩展（4-8 小时）
+1. 集成真实 API（订单系统、物流系统）
+2. 增加多轮对话复杂度
+3. 添加数据分析功能
+4. 支持多平台部署
+
+### 长期规划（16+ 小时）
+1. 开发完整后台管理系统
+2. 添加用户画像和个性化推荐
+3. 实现语音交互功能
+4. 开发移动端应用
+
+---
+
+**版本**: v3.1  
+**更新日期**: 2026-03-05  
+**项目状态**: ✅ Phase 1 完成，🚧 Phase 2 规划中  
+**GitHub**: https://github.com/www063sss-wq/AI-course-creator.git
